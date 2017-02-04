@@ -23,6 +23,9 @@ spec :: Spec
 spec =
     context "Data.Time.Distance" $ parallel $ modifyMaxSuccess (* 1000) $ do
         describe "distanceOfTimeInWords" $ do
+            it "handles milliseconds in the past" $ property $ \d ->
+                distanceOfTimeInWords (addMilliseconds d (-30)) (toTime d) `shouldBe` "30 milliseconds ago"
+
             it "handles hours in the past" $ property $ \d ->
                 distanceOfTimeInWords (addHours d (-2)) (toTime d) `shouldBe` "2 hours ago"
 
@@ -49,6 +52,9 @@ spec =
 
 addHours :: T.Day -> Integer -> T.UTCTime
 addHours d i = T.UTCTime d (fromInteger $ i * 60 * 60)
+
+addMilliseconds :: T.Day -> Rational -> T.UTCTime
+addMilliseconds d i = T.UTCTime d (fromRational $ i / 1000)
 
 addDays :: T.Day -> Integer -> T.UTCTime
 addDays d i = T.UTCTime (T.addDays i d) 0

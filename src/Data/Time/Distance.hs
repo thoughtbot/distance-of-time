@@ -59,7 +59,10 @@ distanceOfTime a b = TimeDifference (TimeDistance amount unit) (directionFromDif
   where
     diff = T.diffUTCTime a b
     (TimeDistance i unit) = M.fromMaybe years $ bestTimeDistance diff
-    amount = abs $ floor diff `div` (i `div` 1000)
+    amount
+        | c == 0 = abs $ floor $ diff * 1000
+        | otherwise = abs $ floor diff `div` c
+    c = i `div` 1000
 
 bestTimeDistance :: T.NominalDiffTime -> Maybe TimeDistance
 bestTimeDistance v = safeLast $ filter timeValuesUnderBounds timeValues
