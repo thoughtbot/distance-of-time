@@ -1,5 +1,5 @@
 name:                distance-of-time
-version:             0.1.0.0
+version:             0.1.1.0
 synopsis:            Generate readable distances between times.
 description:         Please see README.md
 homepage:            https://github.com/joshuaclayton/distance-of-time#readme
