@@ -23,29 +23,30 @@ spec :: Spec
 spec =
     context "Data.Time.Distance" $ parallel $ modifyMaxSuccess (* 1000) $ do
         describe "distanceOfTimeInWords" $ do
-            it "handles milliseconds in the past" $ property $ \d ->
+            it "handles milliseconds" $ property $ \d -> do
                 distanceOfTimeInWords (addMilliseconds d (-30)) (toTime d) `shouldBe` "30 milliseconds ago"
+                distanceOfTimeInWords (addMilliseconds d (900)) (toTime d) `shouldBe` "900 milliseconds from now"
 
-            it "handles hours in the past" $ property $ \d ->
+            it "handles seconds" $ property $ \d -> do
+                distanceOfTimeInWords (addMilliseconds d (-30000)) (toTime d) `shouldBe` "30 seconds ago"
+                distanceOfTimeInWords (addMilliseconds d (45000)) (toTime d) `shouldBe` "45 seconds from now"
+
+            it "handles hours" $ property $ \d -> do
                 distanceOfTimeInWords (addHours d (-2)) (toTime d) `shouldBe` "2 hours ago"
-
-            it "handles hours in the future" $ property $ \d ->
                 distanceOfTimeInWords (addHours d 2) (toTime d) `shouldBe` "2 hours from now"
 
-            it "handles days in the future" $ property $ \d ->
+            it "handles days" $ property $ \d -> do
+                distanceOfTimeInWords (addDays d (-2)) (toTime d) `shouldBe` "2 days ago"
                 distanceOfTimeInWords (addDays d 2) (toTime d) `shouldBe` "2 days from now"
 
-            it "handles days in the past" $ property $ \d ->
-                distanceOfTimeInWords (addDays d (-2)) (toTime d) `shouldBe` "2 days ago"
+            it "handles months" $ property $ \d -> do
+                distanceOfTimeInWords (addDays d (-182)) (toTime d) `shouldBe` "6 months ago"
+                distanceOfTimeInWords (addDays d 40) (toTime d) `shouldBe` "1 month from now"
 
             it "handles years ago" $ property $ \d -> do
                 distanceOfTimeInWords (addDays d (-365)) (toTime d) `shouldBe` "12 months ago"
                 distanceOfTimeInWords (addDays d (-366)) (toTime d) `shouldBe` "2 years ago"
-
-            it "handles years from now" $ property $ \d ->
                 distanceOfTimeInWords (addDays d 365) (toTime d) `shouldBe` "12 months from now"
-
-            it "handles years from now" $ property $ \d -> do
                 distanceOfTimeInWords (addDays d 400) (toTime d) `shouldBe` "1 year from now"
                 distanceOfTimeInWords (addDays d 710) (toTime d) `shouldBe` "1 year from now"
                 distanceOfTimeInWords (addDays d 730) (toTime d) `shouldBe` "2 years from now"
