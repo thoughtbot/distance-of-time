@@ -19,6 +19,7 @@ data TimeUnit
     | Minute
     | Hour
     | Day
+    | Week
     | Month
     | Year
 
@@ -36,6 +37,7 @@ instance Show TimeUnit where
     show Minute = "minute"
     show Hour = "hour"
     show Day = "day"
+    show Week = "week"
     show Month = "month"
     show Year = "year"
 
@@ -67,16 +69,17 @@ distanceOfTime a b = TimeDifference (TimeDistance amount unit) (directionFromDif
 bestTimeDistance :: T.NominalDiffTime -> Maybe TimeDistance
 bestTimeDistance v = safeLast $ filter timeValuesUnderBounds timeValues
   where
-    timeValues = [milliseconds, seconds, minutes, hours, days, months, years]
+    timeValues = [milliseconds, seconds, minutes, hours, days, weeks, months, years]
     timeValuesUnderBounds (TimeDistance i _) = toNominalDifftime (i `div` 1000) < abs v
     toNominalDifftime = fromInteger . toInteger
 
-milliseconds, seconds, minutes, hours, days, months, years :: TimeDistance
+milliseconds, seconds, minutes, hours, days, weeks, months, years :: TimeDistance
 milliseconds = TimeDistance 1 Millisecond
 seconds      = buildTime 1000 milliseconds Second
 minutes      = buildTime 60   seconds      Minute
 hours        = buildTime 60   minutes      Hour
 days         = buildTime 24   hours        Day
+weeks        = buildTime 7    days         Week
 months       = buildTime 730  hours        Month
 years        = buildTime 365  days         Year
 

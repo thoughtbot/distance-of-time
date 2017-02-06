@@ -39,6 +39,10 @@ spec =
                 distanceOfTimeInWords (addDays d (-2)) (toTime d) `shouldBe` "2 days ago"
                 distanceOfTimeInWords (addDays d 2) (toTime d) `shouldBe` "2 days from now"
 
+            it "handles weeks" $ property $ \d -> do
+                distanceOfTimeInWords (addDays d (-21)) (toTime d) `shouldBe` "3 weeks ago"
+                distanceOfTimeInWords (addDays d 21) (toTime d) `shouldBe` "3 weeks from now"
+
             it "handles months" $ property $ \d -> do
                 distanceOfTimeInWords (addDays d (-182)) (toTime d) `shouldBe` "6 months ago"
                 distanceOfTimeInWords (addDays d 40) (toTime d) `shouldBe` "1 month from now"
