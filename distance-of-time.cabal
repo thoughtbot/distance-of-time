@@ -2,11 +2,11 @@ name:                distance-of-time
 version:             0.1.2.0
 synopsis:            Generate readable distances between times.
 description:         Please see README.md
-homepage:            https://github.com/joshuaclayton/distance-of-time#readme
+homepage:            https://github.com/thoughtbot/distance-of-time#readme
 license:             MIT
 license-file:        LICENSE
 author:              Josh Clayton
-maintainer:          sayhi@joshuaclayton.me
+maintainer:          jclayton@thoughtbot.com
 copyright:           2017
 category:            Time
 build-type:          Simple
@@ -34,4 +34,4 @@ test-suite distance-of-time-test
 
 source-repository head
   type:     git
-  location: https://github.com/joshuaclayton/distance-of-time
+  location: https://github.com/thoughtbot/distance-of-time
