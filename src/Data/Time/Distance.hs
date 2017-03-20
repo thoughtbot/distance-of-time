@@ -1,6 +1,7 @@
 module Data.Time.Distance
     ( TimeUnit(..)
     , TimeDirection(..)
+    , DiffableTime(..)
     , distanceOfTime
     , distanceOfTimeInWords
     ) where
@@ -53,13 +54,19 @@ instance Show TimeDifference where
     show (TimeDifference distance direction) =
         show distance ++ " " ++ show direction
 
-distanceOfTimeInWords :: T.UTCTime -> T.UTCTime -> String
+class DiffableTime a where
+    toTime :: a -> T.UTCTime
+
+instance DiffableTime T.UTCTime where
+    toTime = id
+
+distanceOfTimeInWords :: (DiffableTime a, DiffableTime b) => a -> b -> String
 distanceOfTimeInWords a = show . distanceOfTime a
 
-distanceOfTime :: T.UTCTime -> T.UTCTime -> TimeDifference
+distanceOfTime :: (DiffableTime a, DiffableTime b) => a -> b -> TimeDifference
 distanceOfTime a b = TimeDifference (TimeDistance amount unit) (directionFromDiff diff)
   where
-    diff = T.diffUTCTime a b
+    diff = T.diffUTCTime (toTime a) (toTime b)
     (TimeDistance i unit) = M.fromMaybe years $ bestTimeDistance diff
     amount
         | c == 0 = abs $ floor $ diff * 1000
